@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "974860032238",
+    "project_id": "train-fda1f",
+    "storage_bucket": "train-fda1f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:974860032238:android:d06758648d357545f3bbff",
+        "android_client_info": {
+          "package_name": "com.example.train"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "974860032238-dlioo5tc93v27u0ed5gf2jvt6pat8j68.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.train",
+            "certificate_hash": "0d5c8e2ee600286161244f636dcb29a9651e1a72"
+          }
+        },
+        {
+          "client_id": "974860032238-j16j009tbb9tomjatga7f4cvub7bnt71.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNXPrV4oixrgzMVpSOYPeZj9Pe_VswNlU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "974860032238-j16j009tbb9tomjatga7f4cvub7bnt71.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
