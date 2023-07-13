@@ -1,150 +1,32 @@
-import 'package:bloc/bloc.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
-import 'package:train/layout/shop_app/shop_layout.dart';
-import 'package:train/layout/social_app/social_layout.dart';
-import 'package:train/models/socialApp/comment_model.dart';
+import 'dart:developer';
 
-import 'package:train/shared/bloc_opserver.dart';
-import 'package:train/shared/components/constants.dart';
-import 'package:train/shared/cubit/cubit.dart';
-import 'package:train/shared/cubit/states.dart';
-import 'package:train/shared/network/local/cash_helper.dart';
-
-import 'package:train/shared/network/remote/dio_helper.dart';
-import 'package:train/shared/styles/themes.dart';
-import 'layout/news_app/cubit/cubit.dart';
-import 'layout/news_app/news_layout.dart';
 import 'package:flutter/material.dart';
+import 'package:printer/priter_services.dart';
 
-import 'layout/shop_app/cubit/shop_cubit.dart';
-import 'layout/social_app/cubit/social_cubit.dart';
-import 'modules/basics/login/login_screen.dart';
-import 'modules/shop_app/on_boarding/on_boarding_screen.dart';
-import 'modules/shop_app/shop_login/shop_login_screen.dart';
-import 'modules/social_app/social_login/shop_login_screen.dart';
-
-
-
-void main() async {
-
-//وظيفة هذا الكود هو ان بيتأكد ان كل ميثود موجوده في دالة main خلصت ثم يعمل Run
-  WidgetsFlutterBinding.ensureInitialized();//انا بكتب الكود دا في حالة وجود داتا جايه من Future
-  await Firebase.initializeApp(
-  );
-  DioHelper.inti();
-  BlocOverrides.runZoned(
-          () {},
-      blocObserver: MyBlocObserver(),
-    );
-  await  CashHelper.inti();
-  bool? isDark=CashHelper.getData(key: 'isDark');
-  print(isDark);
-  /*  Shop App
-  String? onBoarding=CashHelper.getData(key: "onBoarding");
-   token=CashHelper.getData(key: "token"); // this variable defined in constant file
-  if(onBoarding!=null)// if we pass onBoarding and go to ShopLoginScreen
-    {
-       if(token!=null)//if we login before
-       {widget = ShopLayout();} // go to ShopLayout
-       else{widget=ShopLoginScreen();}
-  }
-  else
-    {
-       widget=OnBoardingScreen();
-    }*/
-uId=CashHelper.getData(key: "uId");
-  Widget widget;
-  if(uId!=null)
-    {
-      widget=SocialLayout();
-      print(uId);
-      print("uiddddddddddddddddddddddddddddddddddd");
-
-    }
-  else{
-    widget=SocialLoginScreen();
-  }
-
-  runApp( MyApp(
-    dark: isDark,
-    startWidget:widget,
-  ));
+void main() {
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  final bool ?dark;
-   final  Widget ?startWidget;
+  const MyApp({super.key});
 
-   MyApp({this.dark, this.startWidget});
-
-
-
-
-   // This widget is the root of your application.
+  // This widget is the root of your application.
   @override
-
   Widget build(BuildContext context) {
-
-    return MultiBlocProvider(
-      providers:
-      [
-        BlocProvider(create: (context)=>NewsCubit()..getBusiness(),),
-        BlocProvider(create: (context)=>AppCubit()),
-        BlocProvider(create: (context)=>ShopCubit()..getHomeData()..getCategoriesData()..getFavorites()..getDataUser()),
-        BlocProvider(create: (context)=>SocialCubit()..getUserData()..getDataPosts()),
-
-
-
-      ],
-      child: BlocConsumer<AppCubit,AppStates>(
-        listener: (context, state){},
-        builder: (context,state) {
-        return MaterialApp(
-
-          title: 'Flutter Demo',
-          theme:themeLight , // theme:بتستقبل المود المضىء
-          darkTheme: darkTheme,// darkTheme:بتستقبل المود المظلم
-          themeMode:AppCubit.get(context).isDark?ThemeMode.dark:ThemeMode.light,
-          home: startWidget,
-        );
- },
+    return MaterialApp(
+      title: 'Printer Demo',
+      navigatorKey: appNavigatorKey,
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        useMaterial3: true,
       ),
+      home: const MyHomePage(title: 'Printer Page'),
     );
   }
-
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -153,68 +35,54 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
+final ipController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
+
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
+
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Enter Printer IP Address',
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                controller: ipController,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  labelText: 'IP Address',
+                ),
+              ),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        onPressed: (){
+          _print();
+        },
+        tooltip: 'Print',
+        child: const Icon(Icons.print),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  void _print() {
+    print(ipController.text);
+    printTest(ipController.text);
   }
 }
